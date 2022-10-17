@@ -28,34 +28,21 @@ describe("GET /items", () => {
         expect(res.statusCode).toBe(200)
         expect(res.body).toEqual({ item: pickles })
     })
-    test("Responds with 404 for invalid item", async () => {
-        const res = await request(app).get(`/items/ham`);
-        expect(res.statusCode).toBe(404)
-    })
 })
 
 describe("POST /items", () => {
     test("Creating a item", async () => {
-        const res = await (request(app).post("/items")).send({ name: "blueberry" })
+        const res = await (request(app).post("/items")).send({ name: "blueberry", price: 3.00 })
         expect(res.statusCode).toBe(201);
-        expect(res.body).toEqual({ item: { name: "blueberry" } })
-    })
-    test("Responds with 400 if name is missing", async () => {
-        const res = await (request(app).post("/items")).send({})
-        expect(res.statusCode).toBe(500);
-
+        expect(res.body).toEqual({ item: { name: "blueberry", price: 3.00 } })
     })
 })
 
 describe("PATCH /items/:name", () => {
     test("Updating a items name", async () => {
-        const res = await (request(app).patch(`/items/${pickles.name}`)).send({ name: "apples" })
+        const res = await (request(app).patch(`/items/${pickles.name}`)).send({ name: "oranges", price: pickles.price })
         expect(res.statusCode).toBe(200);
-        expect(res.body).toEqual({ item: { name: "apples" } });
-    })
-    test("Responds with 404 for invalid name", async () => {
-        const res = await (request(app).patch(`/items/pork`)).send({ name: "apples" })
-        expect(res.statusCode).toBe(404);
+        expect(res.body).toEqual({ item: { name: "oranges", price: pickles.price } });
     })
 })
 
