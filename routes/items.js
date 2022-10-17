@@ -51,16 +51,13 @@ router.patch("/items/:name", (req, res, next) => {
 
 // DELETE should delete a specific item from an array
 router.delete("/items/:name", (req, res, next) => {
-    try {
-        const foundItem = items.findIndex(item => item.name === req.params.name)
-        if (foundItem === -1) {
-            throw new ExpressError("Item not found", 404)
-        }
-        items.splice(foundItem, 1)
-        return res.json({ message: "Deleted" })
-    } catch (e) {
-        next(e)
+    const foundItem = items.findIndex(item => item.name === req.params.name)
+    if (foundItem === -1) {
+        throw new ExpressError("Item not found", 404)
     }
+    items.splice(foundItem, 1)
+    return res.json({ message: "Deleted" })
+
 })
 
 module.exports = router;
